@@ -1,0 +1,37 @@
+
+string dummyList[] = {}
+
+DB  db 	= create "Attribute List"
+DBE	lst = listView(db, listViewOptionCheckboxes|listViewOptionMultiselect, 300, 8, dummyList)
+					
+realize db
+
+insertColumn(lst, 0, "Attributes", 150, iconNone)
+insertColumn(lst, 1, "Type", 150, iconNone)
+					
+AttrDef ad
+Module currMod = current Module
+
+for ad in currMod do
+{
+	int idx = noElems(lst)
+	insert(lst, idx , ad.name, iconNone)
+	set(lst, idx, 1, ad.typeName)
+	
+	if(ad.hidden)
+	{
+		set(lst, idx, 1, iconFormalDeleted)
+	}
+	else if(ad.system)
+	{
+		set(lst, idx, 1, iconReadOnly)
+	}
+	else
+	{
+		set(lst, idx, 1, iconNone)
+
+	}
+}
+
+show db
+

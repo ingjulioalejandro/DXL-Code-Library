@@ -1,0 +1,124 @@
+
+
+
+/////////////////////////////////////////////////////
+
+Module currMod = current Module
+Module tgtMod  = null
+string emptyArray[] = {}
+DB	   db			= null
+DBE    tgtModFld	 = null
+DBE    tgtModBtn	 = null
+DBE    lnkModFld	 = null
+DBE    lnkModBtn	 = null
+
+DBE	   srcAttrListDBE  = null
+DBE	   tgtAttrListDBE  = null
+
+// Functions
+int linkByAttr(string tgtModName, string lnkModName, string sSrcAttrName, string sTgtAttrName)
+{
+	Module tgtMod = read(tgtModName, false)
+	if(null tgtMod) 
+	{
+		errorBox "Could not open module " tgtModName
+		return 0
+	}
+
+	Object tgtObj, srcObj
+
+	string srcAttrVal
+	string tgtAttrVal
+
+	Link l
+	int iLinksCreated = 0
+
+	for srcObj in currMod do
+	{
+		srcAttrVal = srcObj.sSrcAttrName ""
+		if(null srcAttrVal) continue
+		
+		for tgtObj in tgtMod do
+		{
+			tgtAttrVal = tgtObj.sTgtAttrName ""
+			if(null tgtAttrVal) continue
+			
+			if(srcAttrVal == tgtAttrVal)
+			{
+				srcObj -> lnkModName -> tgtObj
+				iLinksCreated++
+			}
+		}
+	}
+
+	return iLinksCreated 
+}
+
+void initAttrList(DBE dbe, Module m)
+{
+	AttrDef adRec
+	string  adName
+	for adRec in m do
+	{
+		if(!adRec.object) continue
+		adName = adRec.name
+		insert(dbe, noElems(dbe), adName)
+	}
+}
+
+void doBrowseTgt(DBE btn)
+{
+	Folder root = folder("/")	
+	string tgtModuleName = fnMiniExplorer(db, root, MINI_EXP_FORMAL_MODS, "Browse", "Select a target module")
+
+    if (!null tgtModuleName)
+    { 
+        set(tgtModFld, tgtModuleName )
+        tgtMod = read(tgtModuleName, false)
+        initAttrList(tgtAttrListDBE, tgtMod)
+    }
+}
+
+void doBrowseLnk(DBE btn)
+{
+	Folder root = folder("/")	
+	string lnkModuleName = fnMiniExplorer(db, root, MINI_EXP_LINK_MODS, "Browse", "Select a link module")
+
+    if (!null lnkModuleName)
+    { 
+        set(lnkModFld, lnkModuleName )
+    }
+}
+
+void doOK(DB xx)
+{
+	string sTgtModName = get(tgtModFld)
+	string sLinkModName = get(lnkModFld)
+	string sTgtAttrName = get( tgtAttrListDBE)
+	string sSrcAttrName  = get( srcAttrListDBE   )
+	
+	int i = linkByAttr(sTgtModName, sLinkModName, sSrcAttrName, sTgtAttrName)
+	
+	infoBox i " links created"
+	// hide xx
+	
+}
+
+// Main
+db = create "Link by Attribute"
+tgtModFld = field(db, "Target module:", "", 80, false) 
+beside(db)
+tgtModBtn = button(db, "Browse", doBrowseTgt)
+left(db)
+lnkModFld = field(db, "Link module:   ", "", 80, false) 
+beside(db)
+lnkModBtn = button(db, "Browse", doBrowseLnk)
+
+srcAttrListDBE = list(db, "Select source attribnute:", 100, 10, emptyArray) 
+tgtAttrListDBE = list(db, "Select target attribnute:", 100, 10, emptyArray) 
+
+apply(db, "OK", doOK)
+
+realize db
+initAttrList(srcAttrListDBE, currMod)
+show db

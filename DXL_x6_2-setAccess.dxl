@@ -1,0 +1,55 @@
+// Lab 6.2 - Shared access setup
+
+/*
+Manually open the "Stakeholder Requirements" module
+write and test a script to do the following:
+
+    Set the "Everyone" groups access for every level 1 object to "read", "create" and "modify"
+
+    Save the module
+*/
+
+Module m = current
+Object o
+
+for o in top m do 
+{
+	// give everyone full access before we take 
+	// all the others away
+    set(o, delete|control, null) 
+    
+    // remove all specific access
+    unsetAll(o)
+     
+    // Give current user full access
+    string err = set(o, delete|control, doorsname)
+    if(!null err) infoBox err
+    
+    // Set everyone else to create and modify access
+    err = set(o, create|modify, null)
+    if(!null err) infoBox err
+}
+save(m)
+refresh(m)
+
+
+///////////////////////////////////////
+// Print the name of all users
+User u
+
+for u in userList do 
+{
+ 	string s = u.name
+	print s "\n"
+} 
+
+
+///////////////////////////////////////
+// Print the name of all groups
+Group u
+
+for u in groupList do 
+{
+ 	string s = u.name
+	print s "\n"
+} 

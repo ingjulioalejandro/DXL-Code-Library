@@ -1,0 +1,77 @@
+
+int demote(Object currObj)
+{
+	if(null currObj)  return -1
+	if(table(currObj)) return -1
+	if(row(currObj))   return -1
+	
+    int currLev = level(currObj)
+    // find last object of new level
+    Object prevObj = previous currObj
+
+    if ( null prevObj ) return level(currObj)
+    if ( level(prevObj) == currLev )
+    {
+        move(currObj, first below prevObj)
+    }
+    else
+    { // find parent of appropriate level
+	     while ( !null parent prevObj && level(prevObj) > currLev + 1)
+	     {
+		     prevObj = parent(prevObj)
+	     }
+	     
+	     if( level(prevObj) == currLev + 1  )
+	     {
+	     	move(currObj, after prevObj)
+     	}
+	}
+	return level(currObj)
+}
+
+void restructureModule(Module m, string newLevelAttrName)
+{
+	int thisLevel, newLevel
+	Object o 
+	for o in m do
+	{
+		thisLevel = level(o)
+		newLevel = o.newLevelAttrName 
+		
+		while(thisLevel < newLevel )
+		{
+			thisLevel = demote(o)
+		}
+	}
+}
+
+string testResult(Module m, string newLevelAttrName )
+{
+	Buffer b = create()
+	int thisLevel, newLevel
+	Object o 
+	for o in m do
+	{
+		thisLevel = level(o)
+		newLevel = o.newLevelAttrName 
+		
+		if(thisLevel != newLevel)
+		{
+			b += identifier(o)
+		}
+	}
+	
+	return stringOf(b)
+}
+
+
+//////
+// Main
+restructureModule(current Module, "Level from Excel")
+
+string err = testResult(current Module, "Level from Excel")
+
+if(!null err)
+{
+	infoBox(err)
+}

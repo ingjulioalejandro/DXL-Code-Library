@@ -1,0 +1,19 @@
+// Lab 8.2 - Object sync
+
+/*
+Write and test a script that creates a message box that displays the Object Identifier
+of the selected Object each time a new Object is selected.
+*/
+
+DB db = create "Trigger demo"
+DBE objFld = field(db, "Last object", identifier(current Object), 10, true)
+
+void doSyncEvent(Trigger t) {
+    Object oRef = object(t)
+    set(objFld, identifier(oRef))
+    raise(db)
+}
+
+Trigger t = trigger(object -> all, sync, 10, doSyncEvent)
+
+show(db)

@@ -1,0 +1,31 @@
+// Lab 5.1 - Simple dialog box
+/*
+This script generates a simple dialog with four elements.
+*/
+
+DB  pizzaDB    = create("Pizza Order", styleCentered)
+DBE cNameDBE   = field(pizzaDB, "Customer name", "John Doe", 20, false)
+DBE dateLblDBE = label(pizzaDB, "Last ordered on:")
+DBE oDateDBE   = date( pizzaDB, 30, today, true)
+DBE oFrameDBE  = frame(pizzaDB, "Order details", 300, 150)
+show(pizzaDB)
+
+
+/////////////////////////////////////////////////////////////////////
+// Alt naming
+
+// Declarations
+DB  dbPizza    		= null		// The dialog box
+DBE dbeCustNameFld  = null		// The customer name field
+DBE dbeDateLbl 		= null		// The last order label
+DBE dbeOrderDate   	= null		// The date picker
+DBE dbeDetailsFrm	= null		// The frame
+
+// Main
+dbPizza 		= create("Pizza Order", styleCentered|styleFloating)
+dbeCustNameFld 	= field( dbPizza, "Customer name", "John Doe", 20, false)
+dbeDateLbl 		= label( dbPizza, "Last ordered on:")
+dbeOrderDate   	= date ( dbPizza, 30, dateAndTime(today), true)
+dbeDetailsFrm	= frame( dbPizza, "Order details", 300, 150)
+
+show(dbPizza)

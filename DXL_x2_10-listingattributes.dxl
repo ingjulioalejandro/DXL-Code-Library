@@ -1,0 +1,65 @@
+	// Lab 2.10 - Listing attributes
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+For all non-system object attributes, print the following:
+
+    Attribute name
+    Attribute type name
+*/
+
+AttrDef adRec
+
+for adRec in current Module do 
+{
+    if ( !adRec.system && adRec.object)   // could use and as well
+    {   
+        print "Attribute   <" adRec.name ">  of type  <" adRec.typeName ">\n"
+    }
+}
+
+
+
+//////////////////
+// Alt
+AttrDef adRec
+
+for adRec in current Module do 
+{
+    if(adRec.system)  continue
+    if(!adRec.object) continue
+    
+    print "Attribute   <" adRec.name ">  of type  <" adRec.typeName ">\n"
+}
+
+
+
+//////////////////
+// Alt
+AttrDef adRec
+Object o
+string adName
+Buffer b = create()
+Stream out = write "C:/temp/out.xls"
+
+for adRec in current Module do 
+{
+    if(adRec.system)  continue
+    if(!adRec.object) continue
+
+	for o in current Module do
+	{
+		b += identifier(o) 
+		
+		adName = adRec.name
+		b += "\t" o.adName ""
+	}
+	b +=  "\n"
+}
+
+out << stringOf(b)
+close out
+
+delete(b)

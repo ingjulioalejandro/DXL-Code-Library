@@ -1,0 +1,49 @@
+
+string emptyList[] ={}
+
+DB  db 			= null
+DBE dbeAttrList = null
+
+///////////////////////////////////////////////////////
+// Functions
+void initList()
+{
+	insertColumn(dbeAttrList,0, "Attribute Name", 150, iconDatabase) 
+	insertColumn(dbeAttrList,1, "Type Name", 150, iconProject)
+	insertColumn(dbeAttrList,2, "System", 100, iconReadOnly) 
+
+	int idx = 0
+	string isSystem = ""
+	
+	AttrDef adRec
+	for adRec in current Module do 
+	{
+	    if (adRec.object)   
+	    {   
+		    idx = noElems(dbeAttrList)
+		    
+		    // insert Row and add attribute name
+	        insert(dbeAttrList, idx, adRec.name, iconNone )
+	        
+	        // Add type anme to 2nd column
+	        set(dbeAttrList, idx, 1, adRec.typeName)
+	        
+	        // if it is a system attribute set 3rd column to yes
+	        if(adRec.system) 
+	        {
+	        	set(dbeAttrList, idx, 2, "Yes")
+	        	set(dbeAttrList, idx, 2, iconReadOnly)
+        	}
+	    }
+	}
+}
+
+/////////////////////////////////////////////
+// Main
+db 			= create "Attribute List"
+dbeAttrList = listView(db, listViewOptionCheckboxes ,400,10, emptyList) 
+
+realize db
+initList
+
+show db

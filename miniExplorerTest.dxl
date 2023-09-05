@@ -1,0 +1,29 @@
+
+// miniExplorerTest.dxl
+
+/*
+	fnMiniExplorer(DB db, Folder thisFolder, int? moduleTypes, string explorerTitle, string explorerLabel)
+	This function opens a mini module explorer for picking a module or folder name.
+*/
+
+DB db 
+DBE btn
+DBE lbl
+
+void browse(DBE x)
+{
+    Folder thisFolder = current Folder
+    
+    if (null thisFolder) return
+    string szModuleName =  fnMiniExplorer(db, thisFolder, MINI_EXP_FORMAL_MODS | MINI_EXP_LINK_MODS | MINI_EXP_FP, "Browse", "Select a target module")
+
+    if (!null szModuleName)
+        set(lbl, szModuleName )
+}
+
+db = create "test DB"
+
+btn = button(db, "open mini explorer...", browse, true)
+lbl = label(db, "...")
+
+show db

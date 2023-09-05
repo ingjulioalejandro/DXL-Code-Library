@@ -1,0 +1,16 @@
+// popups for PSToolbox scripts
+
+if(doorsname == "Nils Palsson")
+{
+	separator
+	
+	createMenu(alwaysOn,"Demo Menu", 'D', null)
+	
+	    createItem(needsCurrentObject, "Demote object", 'D', null, null,  null ,null, "Moves object down one level in the hierarchy", "", doorsHome "/lib/dxl/addins/PSToolbox/utensils/demote.inc" )
+	    createItem(needsCurrentObject, "Demote object with descendants", 'D', null, null,  null ,null, "Moves object and its descendants down one level in the hierarchy", "", doorsHome "/lib/dxl/addins/PSToolbox/utensils/demhier.inc" )
+	    createItem(needsCurrentObject, "Promote object with descendants", 'D', null, null,  null ,null, "Moves object and its descendants up one level in the hierarchy", "", doorsHome "/lib/dxl/addins/PSToolbox/utensils/promhier.inc" )
+	    createItem(needsCurrentObject, "Convert Object Text to Object Heading", 'D', null, null,  null ,null, "Moves object and its descendants up one level in the hierarchy", "", doorsHome "/lib/dxl/addins/PSToolbox/utensils/txttohead.inc" )
+	    createItem(needsCurrentObject, "Convert Object Heading to Object Text", 'D', null, null,  null ,null, "Moves object and its descendants up one level in the hierarchy", "", doorsHome "/lib/dxl/addins/PSToolbox/utensils/headtotxt.inc" )
+	
+	end menu
+}

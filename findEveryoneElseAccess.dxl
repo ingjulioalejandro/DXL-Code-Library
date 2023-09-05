@@ -1,0 +1,34 @@
+// Access query
+
+/*
+	Find all modules in the current project 
+	where "everyone else" has more than read access
+*/
+
+Item itm
+Module m
+AccessRec ar = null
+string uName = null
+Buffer b = create()
+for itm in current Project do
+{
+	if(type(itm) == "Formal")
+	{
+		m = read(fullName(itm), false)
+		
+		for ar in m do
+		{
+			uName = username(ar)
+			if(null uName)  // This is the everyone else group
+			{
+				if(create(ar) || modify(ar) || delete(ar) || control(ar))
+				{
+					b += fullName(m) "\t EVERYONE ELSE HAS MORE THAN READ ACCESS!!!\n"
+				}
+			}
+		}
+	}
+}
+
+print stringOf(b)
+delete b

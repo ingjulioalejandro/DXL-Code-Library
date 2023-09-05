@@ -1,0 +1,37 @@
+// Extra exercise
+
+/*
+	For each object in the current module if the 
+	Object Text contains the word shall set the attribtue
+	Object Type to be "Requirement". 
+	
+	If the the object has an Object Heading set the the 
+	attribute Object Type to be "Heading".
+	
+	If the Object Text does not contain "shall" 
+	and it is not a heading set the attribute 
+	"Object Type" to be "Information"
+	
+	Use function bool matches(string reg, string text)
+*/
+
+Object o
+string txt, head
+
+for o in current Module do
+{
+	txt  = o."Object Text"
+	head = o."Object Heading"
+	if(matches( "(shall|Shall|must|Must)", txt))
+	{
+		o."Object Type" = "Requirement"
+	}
+	else if( !null head )
+	{
+		o."Object Type" = "Heading"
+	}
+	else
+	{
+		o."Object Type" = "Information"
+	}
+}

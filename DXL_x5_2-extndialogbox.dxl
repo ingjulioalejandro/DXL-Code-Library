@@ -1,0 +1,79 @@
+// Lab 5.2 - Extended dialog box
+
+/*
+This script generates an extended dialog with seven elements.
+*/
+
+string crusts[]   = {"Thin", "Hand-tossed", "Pan"}
+string toppings[] = {"Cheese", "Pepperoni", 
+					 "Beef", "Sausage", 
+					 "Ham", "Mushroom"}
+					 
+string methods[]  = {"Eat-in", "Delivery", "Carry-out"}
+
+DB  pizzaDB    = create("Pizza Order", styleCentered)
+DBE cNameDBE   = field(pizzaDB, "Customer name", "John Doe", 20, false)
+DBE dateLblDBE = label(pizzaDB, "Last ordered on:")
+DBE oDateDBE   = date( pizzaDB, 30, dateOf(0), true)
+
+DBE oFrameDBE  = frame(pizzaDB, "Order details", 300, 150)
+DBE crustDBE   = radioBox(pizzaDB, "Crust:  ", crusts, 1)
+DBE topDBE     = multiList(pizzaDB, "Toppings", 200, 4, toppings)
+set(topDBE, 1)
+DBE whereDBE   = choice(pizzaDB, "Order for", methods, 3, 20, 0, false)
+//DBE file 	   = fileName(pizzaDB, "pizza.dat", "*.dat|*.txt", "Pizza Files")
+
+// Go button callback function
+void makePizza(DB calledFrom) 
+{
+	Buffer order   = create()
+    string cName   = get(cNameDBE)
+    string oDate   = get(oDateDBE) 
+    string crust   = crusts[get(crustDBE)]
+    order          += cName " would like a " crust " pizza with:\n"
+    string loc     = get(whereDBE)
+    string tops
+    for tops in topDBE do 
+    {
+        order += "\t" tops "\n"
+    }
+    order += "for " loc " since they haven't had a pizza since " oDate "\n"
+    infoBox(stringOf(order))
+    delete(order)
+    // hide(calledFrom)
+}
+
+apply(pizzaDB, "Go", makePizza)
+show(pizzaDB)
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// Declarations
+DB  dbPizza    		= null		// The dialog box
+DBE dbeCustNameFld  = null		// The customer name field
+DBE dbeDateLbl 		= null		// The last order label
+DBE dbeOrderDate   	= null		// The date picker
+DBE dbeDetailsFrm	= null		// The frame
+DBE dbeCrustRdo		= null		// The crust radio box
+DBE dbeTopML		= null		// The toppings list
+DBE dbeDeliveryCh   = null		// The delivery choice
+DBE dbeFileName		= null		// The file picker
+
+string saCrusts[]   = {"Thin", "Hand-tossed", "Pan"}
+string saToppings[] = {"Cheese", "Pepperoni",  "Beef", "Sausage",  "Ham", "Mushroom"}				 
+string saMethods[] 	= {"Eat-in", "Delivery", "Carry-out"}
+
+// Main
+dbPizza 		= create("Pizza Order", styleCentered)
+dbeCustNameFld 	= field(    dbPizza, "Customer name", "John Doe", 20, false)
+dbeDateLbl 		= label(    dbPizza, "Last ordered on:")
+dbeOrderDate   	= date(     dbPizza, 30, dateAndTime(today), true)
+dbeDetailsFrm	= frame(    dbPizza, "Order details", 300, 150)
+dbeCrustRdo		= radioBox( dbPizza, "Crust:  ", saCrusts, 1)
+dbeTopML		= multiList(dbPizza, "Toppings", 200, 4, saToppings)
+set(dbeTopML, 1) // set the default list value
+dbeDeliveryCh   = choice(   dbPizza, "Order for", saMethods, 3, 20, 0, false)
+dbeFileName		= fileName( dbPizza, "c:/temp/pizza.dat", "*.dat|*.txt", 
+													"Pizza Files|Text Files")
+
+show(dbPizza)

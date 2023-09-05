@@ -1,0 +1,57 @@
+// Lab 4.1 - Simple Export
+
+/*
+For each object in the display set, Export the following:
+    Object Identifier
+    Object Number & Heading - if the object has a heading
+    Object Text - if the object has text
+*/
+
+Stream file = write ("c:/temp/dataout.txt")
+Object o
+string hdg, txt, id
+
+for o in current Module do {
+
+   id = identifier(o)
+   file << id "\t"
+
+   hdg = o."Object Heading"
+   if (! null(hdg)) {
+      file << number(o) "  " hdg "\n"
+      flush(file)
+   }
+
+   txt = o."Object Text"
+   if (! null(txt)) {
+      file << txt "\n"
+   }
+}
+
+close(file)
+
+
+// -----------------------------
+// Alternative: use buffers instead
+
+Buffer b = create()
+Object o
+for o in current Module do 
+{
+    b += identifier(o) "\t"
+
+    if(o."Object Heading" "" != "") 
+    {
+        b += number(o) "  " o."Object Heading" "\n"
+    }
+
+    if(o."Object Text" "" != "") 
+    {
+        b += o."Object Text" "\n"
+    }
+}
+
+Stream file = write ("c:/temp/dataout.txt")
+file << tempStringOf(b)
+delete b
+close(file)

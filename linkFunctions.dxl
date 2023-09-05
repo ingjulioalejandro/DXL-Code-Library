@@ -1,0 +1,49 @@
+Object tgtObj, srcObj
+
+string srcModName, tgtModName
+////////////////////////////////////////
+// Move links from one link module to another
+string newLinkModName = "/Training Car Project 1/Satisfies"
+string oldLinkModName = "/Training Car Project 1/DOORS Links"
+
+int tgtAbsNo, srcAbsNo
+Link lnk, newLink
+
+for srcObj in current Module do
+{
+	for lnk in srcObj -> oldLinkModName do
+	{
+		tgtModName = fullName target (lnk)
+		
+		if(!open module tgtModName)
+		{
+			read(tgtModName, true)
+		}
+		tgtObj = target(lnk)
+		newLink = srcObj -> newLinkModName -> tgtObj
+		delete lnk
+	}
+}
+
+////////////////////////////////////////////////////
+// Change link direction
+string linkModName = "/Training Car Project 1/Satisfies"
+
+int tgtAbsNo, srcAbsNo
+Link lnk, newLink
+
+for srcObj in current Module do
+{
+	for lnk in srcObj -> linkModName do
+	{
+		tgtModName = fullName target (lnk)
+		
+		if(!open module tgtModName)
+		{
+			edit(tgtModName, true)
+		}
+		tgtObj = target(lnk)
+		newLink =  tgtObj-> linkModName -> srcObj
+		delete lnk
+	}
+}

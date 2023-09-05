@@ -1,0 +1,35 @@
+/*
+	List all specific access rights for every item in the project.
+*/
+
+Project p = current Project
+Item itm
+Module m
+Folder f
+AccessRec ar
+string userName = ""
+string arString = ""
+
+for itm in p do
+{
+	for ar in itm do
+	{	
+		arString = ""		
+		if( read(ar) )    arString = "r"
+		if( modify(ar) )  arString = arString "m"
+			if( create(ar) )  arString = arString "c"
+		if( delete(ar) )  arString = arString "d"
+	
+		if( control(ar) ) arString = arString "a"
+		userName = username(ar)
+		print fullName(itm) "(" type(itm) "):\n"
+		if(null userName)
+		{
+			userName = "Everone Else"
+		}
+		
+		print "\tUser " userName " has " arString " access\n"	
+			
+	}
+	
+}

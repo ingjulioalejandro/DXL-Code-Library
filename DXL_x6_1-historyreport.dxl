@@ -1,0 +1,105 @@
+// Lab 6.1 - History report
+
+/*
+Manually open the "Stakeholder Requirements" module
+write and test a script to do the following:
+
+For every object modification in the module, print the following object history information:
+        date
+        author
+        attrName
+        oldValue
+        newValue
+*/
+
+History h
+
+for h in current Module do 
+{
+    print h.author "\t" h.date "\t" goodStringOf(h.type) "\n"
+    if (h.type == modifyObject) 
+    {
+        string oldVal = h.oldValue
+        string newVal = h.newValue
+        print  "\tattribute " h.attrName " from '" oldVal "' to '" newVal "'\n"
+    }
+}
+
+
+///////////////////////////
+// Alt:
+History h
+Buffer b = create
+Object o = current Object
+string result = ""
+for h in o do 
+{
+    b += "\n" h.author "\t" h.date "\t" goodStringOf(h.type) "\n"
+    if (h.type == modifyObject) 
+    {
+	    b += "\tFrom: "
+        RichText rt 
+		string s = h.oldValue 
+       
+		for rt in s do 
+		{
+			b += rt.text
+		}
+        
+		b += "\n\tTo: "
+        
+		s = h.newValue 
+		for rt in s do 
+		{
+			b +=  rt.text
+		}
+    }
+}
+print stringOf(b)
+delete b
+
+/////////////////////////////
+// As Layout DXL
+
+History h
+Buffer b = create
+for h in obj do
+{
+	b += "\n" h.author "\n" h.date "\n" goodStringOf(h.type) "\n"
+    if (h.type == modifyObject) 
+    {
+	    b += "From: "
+		b += plainText( h.oldValue ) "\n"        
+		b += "To: "
+		b += plainText( h.newValue ) "\n"
+    }
+}
+display stringOf(b)
+delete b
+
+
+/////////////////////////
+// or Layout DXL with diff function
+History h
+Buffer oldBuf = create() 
+Buffer newBuf = create() 
+Buffer resBuf = create()
+for h in obj do
+{
+	
+	HistoryType ht = h.type 
+	if (ht==modifyObject && h.attrName "" == "Object Text") 
+	{   			
+		oldBuf = plainText( h.oldValue )
+		newBuf = plainText( h.newValue )
+		
+		display "\n\n" h.date "\n" h.author ""
+		
+        diff(resBuf, oldBuf, newBuf, true) 
+	    displayRichWithColor(stringOf(resBuf))
+	}
+	
+}
+delete resBuf 
+delete oldBuf 
+delete newBuf 

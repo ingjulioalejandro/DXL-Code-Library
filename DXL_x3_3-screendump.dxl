@@ -1,0 +1,66 @@
+// Lab 3.3 - Screen dump
+
+/*
+Manually open the "Stakeholder Requirements" module
+write and test a script to do the following:
+
+For each object in the current display set, print the contents of each displayed column.
+Use tabs to separate column data.
+*/
+
+int startInt = intOf(today )
+
+Module m = current
+Object o
+Column col
+for o in m do 
+{
+    for col in m do 
+    {
+	    if (main(col)) 
+	    {
+	        print  o."Object Heading" o."Object Text" "\t"
+	    } 
+	    else 
+	    {
+	        print  text(col, o) "\t"
+	    }
+    }
+    print "\n"
+}
+
+int endInt = intOf(today)
+int runTime = endInt - startInt
+print "\n\nThis scritp took " runTime " seconds to finish"
+
+////////////////////////////////////////////
+// Alt:
+
+int startInt = intOf(today )
+
+Module m = current
+Object o
+Column col
+Buffer b = create()
+for o in m do 
+{
+    for col in m do 
+    {
+	    if (main(col)) 
+	    {
+	        b +=  o."Object Heading" o."Object Text" "\t"
+	    } 
+	    else 
+	    {
+	        b +=  text(col, o) "\t"
+	    }
+    }
+    b += "\n"
+}
+
+print stringOf(b)
+delete(b)
+
+int endInt = intOf(today)
+int runTime = endInt - startInt
+print "\n\nThis scritp took " runTime " seconds to finish"

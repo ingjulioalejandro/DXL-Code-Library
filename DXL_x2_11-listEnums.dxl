@@ -1,0 +1,76 @@
+// Lab 2.11 - Listing Options
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+Retrieve the type for each of the attributes found in Exercise 14
+If the basetype is enumeration, list the strings of the options
+*/
+
+AttrDef adRec
+AttrType atType
+
+for adRec in current Module do 
+{
+    if (! adRec.system and adRec.object) 
+    {  
+	    print "\nName  =  " adRec.name ",   Type = " adRec.typeName "\n"
+	    
+	    atType = adRec.type	            
+        if (atType.type == attrEnumeration) 
+        {
+	        int i
+            for (i = 0; i < atType.size; i++) 
+            {
+                print "\t" atType.strings[i] 
+                print " (" atType.values[i]  ")\n"
+            }
+        }
+    }
+}
+
+
+////////////////////////////////////////
+// Alternative: whitout the non-system and object attribtue limitation 
+AttrType at
+
+for at in current Module do
+{
+	print at.name "\n"
+	atType = at.type
+    if (atType.type == attrEnumeration) 
+    {
+        int i
+        for (i = 0; i < atType.size; i++) 
+        {
+            print "\t" atType.strings[i] "\n"
+        }
+    }
+}
+
+
+
+///////////////////////////////////////////////////////
+// All attribute dump
+Module currMod = current Module 
+AttrDef adRec
+AttrType atType
+
+Buffer b = create
+string sAdName
+Object o 
+for o in currMod do
+{
+	b += identifier(o) "\t"
+	for adRec in currMod do 
+	{
+		if(!adRec.object) continue
+	   sAdName = adRec.name
+	   b += o.sAdName "\t"
+	}
+	
+	b += "\n"
+}
+print stringOf(b)
+delete b

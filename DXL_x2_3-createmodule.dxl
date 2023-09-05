@@ -1,0 +1,68 @@
+// Lab 2.3 - Create module
+
+/*
+Write and test a script to do the following:
+
+Create a new formal module with the following characteristics:
+
+Name = <Your company name>
+Description = <Your job title>
+Prefix = <Your initials>
+Absolute Number Start = <Any integer greater than 0>
+
+Make it display so you can see it
+
+*/
+
+Module m1 = create("/New Family Car Project/Telelogic1",
+                    "DXL Instructor", "TL", 1, true)
+if(null m1)
+{
+	errorBox "Module creation failed!!"
+}
+refreshDBExplorer
+
+/////////////////////////////////////////////////////////////////////
+// Alt:
+current = folder "/Training Car Project"
+Module m2 = create("Telelogic2", "DXL Instructor", "TL", 1, true)
+
+if(null m2)
+{
+	errorBox "Module creation failed!!"
+}
+refreshDBExplorer
+
+/////////////////////////////////////////////////////////////////////
+// Alt:
+string modname = "/New Family Car Project/Telelogic3"
+if(!exists module modname)  //ModName_ data type
+{
+	Module m1 = create(modname, "DXL Instructor", "TL", 1, true)
+	if(null m1)
+	{
+		errorBox "Module creation failed!!"
+	}
+	refreshDBExplorer
+}
+else
+{
+	infoBox "Module already exists"
+}
+
+
+//////////////////////////////////////////////////
+// Alt:
+Module m = null
+string modname = "/New Family Car Project/Telelogic3"
+string err = create(modname,"DXL Instructor", "TL", 1, m)
+					
+if(!null err) 
+{
+	errorBox "Could not create module " modname ": " err
+}
+else
+{
+	infoBox "Module " fullName m " created."
+}
+refreshDBExplorer

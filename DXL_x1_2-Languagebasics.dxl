@@ -1,0 +1,39 @@
+// Lab 1.2 - Language Basics
+
+/*
+Write and test a script to do the following:
+   - Declare variables to hold each value
+   - Print the sum of 2 added to 20
+   - Print the product of 1.2 multiplied by 43.2
+*/
+
+int  intFirstVal    = 2
+int  intSecondValue = 20
+
+real rlFirstVal  = 1.2
+real rlSecondVal = 43.2
+
+int  intTotal = intFirstVal + intSecondValue
+real rlTotal  = rlFirstVal * rlSecondVal
+
+print intTotal
+print rlTotal
+
+/////////////////////////////////////////////
+int sumUp(int a, int b)
+{
+	int result = null
+	result = a + b
+	return result
+}
+
+print sumUp(2, 20)
+
+real sumUp(real a, real b)
+{
+	real result = null
+	result = a + b
+	real result
+} 
+
+print sumUp(1.2, 43.2)

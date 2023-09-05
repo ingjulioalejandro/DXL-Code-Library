@@ -1,0 +1,72 @@
+
+void loopFolder(Folder parent) {
+	Item iRef = null
+
+	for iRef in parent do {
+		string iType = type(iRef)
+		Folder f = folder (iRef)
+		if (iType == "Formal" ) {
+				string modName = fullName (iRef)
+				ModName_ m = module(modName)
+				setLinkModuleDescriptorsExclusive(parent, m, true)
+		}
+		else if(!null f) {
+			loopFolder(f)  // loop through the folder if iRef is a folder or project
+		} else continue
+	}
+}
+
+void enforceLinkingSchemeAll()
+{
+	Folder f = folder "/"
+	loopFolder(f) 
+	infoBox "Done"
+}
+
+
+void enforceLinkingScheme(Project p)
+{
+	Item     itm	= null 
+	Folder   f	 	= null
+	string   mName 	= null
+	ModName_ modRef = null
+	
+	for itm in p do
+	{
+		if(type(itm) == "Formal")
+		{
+			mName = fullName(itm)
+			f = getParentFolder(itm)
+			modRef = module(mName)
+			
+			setLinkModuleDescriptorsExclusive(f, modRef, true)
+		}
+	}
+	infoBox "Done"
+}
+
+
+
+
+void queryLinkingScheme(Project p)
+{
+	Item     itm	= null 
+	Folder   f	 	= null
+	string   mName 	= null
+	ModName_ modRef = null
+	
+	for itm in p do
+	{
+		if(type(itm) == "Formal")
+		{
+			mName = fullName(itm)
+			f = getParentFolder(itm)
+			modRef = module(mName)
+			
+			print mName "\t" getLinkModuleDescriptorsExclusive(f, modRef) "\n" // undocumented
+			
+		}
+	}
+	infoBox "Done"
+}
+

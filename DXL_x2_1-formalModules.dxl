@@ -1,0 +1,58 @@
+// Lab 2.1 - Modules in Folder
+
+/*
+Print the full name of all "Formal" modules found in the current folder
+*/
+Folder currFolder = current Folder
+Item   itemRef
+
+for itemRef in currFolder do 
+{
+    if (type(itemRef) == "Formal") 
+    {
+        print fullName(itemRef) "\n"
+    }
+}
+
+// The following is beyond the scope of the exercise but useful.
+// It finds all the formal modules in the entire database.
+// Be careful, this uses the 'all' loop that finds deleted items.
+// Do not try to open deleted modules.
+void goRecurse(Folder thisFold) 
+{
+    Item itm
+    for itm in all thisFold do 
+    {
+        if (type(itm) == "Folder" || type(itm) == "Project") 
+        {
+            goRecurse(folder(itm)) // if it's a 'folder' keep digging
+        }
+        else if (type(itm) == "Formal") 
+        {
+            print fullName(itm) "\n"
+            if (isDeleted(itm)) 
+            {
+                print "\twas deleted\n"
+            }
+        }
+    }
+}
+
+goRecurse(folder("/")) // Start from the root of the database
+
+//goRecurse(current Folder) // start at the current folder
+
+///////////////////////////
+// Alt: Print the name of all formal modules at any level below
+// 	    the current Project
+
+Item itm
+Project p = current Project
+
+for itm in p do
+{
+	if ( type(itm) == "Formal" ) 
+    {
+        print fullName(itm) "\n"
+    }
+}

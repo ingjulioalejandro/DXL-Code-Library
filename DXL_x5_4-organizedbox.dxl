@@ -1,0 +1,41 @@
+// Lab 5.4 - Organized dialog box
+
+/*
+This script generates an Functional dialog that prints its contents.
+*/
+
+string crusts[] 	= {"Thin", "Hand-tossed", "Pan"}
+string toppings[] 	= {"Cheese", "Pepperoni", "Beef", "Sausage", "Ham", "Mushroom"}
+string methods[] 	= {"Eat-in", "Delivery", "Carry-out"}
+DB pizzaDB 			= create("Pizza Order", styleCentered)
+DBE cNameDBE 		= field(pizzaDB, "Customer name", "John Doe", 20, false)
+DBE dateLblDBE 		= label(pizzaDB, "Last ordered on:")
+DBE oDateDBE 		= date(pizzaDB, 30, dateOf(0), true)
+DBE oFrameDBE 		= frame(pizzaDB, "Order details", 300, 150)
+DBE crustDBE 		= radioBox(pizzaDB, "Crust", crusts, 1)
+DBE topDBE 			= multiList(pizzaDB, "Toppings", 200, 4, toppings, 6)
+DBE whereDBE 		= choice(pizzaDB, "Order for", methods, 3, 20, 0, false)
+
+crustDBE  -> "top"    -> "inside" -> oFrameDBE
+oFrameDBE -> "bottom" -> "form"
+
+void makePizza(DB winDB) 
+{
+    string cName = get(cNameDBE)
+    Date oDate = get(oDateDBE)
+    string crust = crusts[get(crustDBE)]
+    string loc = get(whereDBE)
+    string tops
+    print cName " would like a " crust " pizza with:\n"
+    for tops in topDBE do 
+    {
+        print tops "\n"
+    }
+    print "for " loc " since they haven't had a pizza since " oDate "\n"
+}
+apply(pizzaDB, "Go", makePizza)
+
+realize(pizzaDB)
+setExtraHeightShare(topDBE, 1.0)
+setExtraWidthShare(topDBE, 1.0)
+show(pizzaDB)

@@ -1,0 +1,103 @@
+// Lab 2.5 - Counting children objects
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+Print the total number of child objects that the current object contains
+*/
+
+int childCount = 0
+Object childObj
+Object o = current
+
+for childObj in o do 
+{
+    childCount++
+}
+
+print "Object " identifier(o) " has " childCount " child objects.\n"
+
+/////////////////////////////////
+// As function
+int countChildObjs(Object o)
+{
+	int childCount = 0
+	Object childObj
+
+	for childObj in o do 
+	{
+	    childCount++
+	}
+	return childCount
+}
+
+Object o = current
+print "Object " identifier(o) " has " countChildObjs(o) " child objects.\n"
+
+
+///////////////////////////////
+// Alt: recursion, printing all objects below current object
+int countChildren(Object o)
+{
+	int childCount = 0
+	Object childObj
+	
+	for childObj in o do 
+	{
+	    childCount++
+	    childCount += countChildren(childObj)
+	}
+	return childCount
+}
+
+print "Object " identifier(o) " has " countChildren(current Object) " child objects.\n"
+
+/////////////////////////////////
+//
+Object o = current
+Object oNext = next(o)
+int iLvl = level(o)
+int i = 0
+while(!null(oNext) && level(oNext) > iLvl)
+{
+	i++
+	oNext = next(o)
+}
+print i
+///////////////////////////////////////////////
+// ALT:
+
+Object o = current
+Object childObj = first(o)
+
+int childCount = 0
+if(!null childObj)
+childCount++
+
+while(!null next( sibling ( childObj) ) )
+{
+	childObj = next( sibling ( childObj ) )
+	childCount++
+}
+ 
+print "Object " identifier(o) " has " childCount " child objects.\n"
+
+///////////////////////////////////////////////
+// ALT:
+int childCount = 0
+Object o = current
+int lvl = level(o)
+print lvl
+
+o = first(o)
+if(!null o )
+{
+	while(!null o && lvl < level(o))
+	{
+		childCount++
+		o = next o
+	}
+}
+
+print "Object has " childCount " child objects.\n"

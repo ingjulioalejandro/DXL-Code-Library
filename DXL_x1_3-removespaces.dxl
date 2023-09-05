@@ -1,0 +1,85 @@
+// Lab 1.3 - Remove spaces
+
+/*
+Remove any leading spaces from a string
+*/
+
+string s = "    leading  spaces"
+int pos
+for (pos = 0 ; pos < length(s) ; pos++) 
+{
+    if( s[pos] != ' ')  //if (! isspace(s[pos])) 
+    {
+        break
+    }
+}
+print s[pos:]
+
+
+
+/////////////////////////////////////////////
+// ALT: Removing leading spaces using while loop
+string s = "    leading  spaces"
+int pos = 0
+
+while(isspace(s[pos]))  // if(s[pos] == ' ' )
+{
+	pos++
+	if(pos > length(s)) halt
+}
+print s[pos:]
+
+
+
+/////////////////////////////////////////////
+// ALT: As function
+string removeSpaces(string s)
+{
+	int pos = 0
+	
+	while(isspace(s[pos]))
+	{
+		pos++
+		if(pos > length(s)) return ""
+	}
+	return s[pos:]
+}
+
+print removeSpaces("    leading  spaces")
+
+
+
+/////////////////////////////////////
+// ALT: Removing all spaces
+string s = "    leading spaces"
+int pos
+for (pos = 0 ; pos < length(s) ; pos++) 
+{
+    if( s[pos] == ' ')
+    {
+	    continue
+    }
+    else
+    {
+	    print s[pos]
+    }
+}
+
+
+
+///////////////////////////////////////
+// Remove trailing spaces
+string removeTrailingSpaces(string s)
+{
+	int pos = length(s) - 1
+		
+	while(isspace(s[pos]))
+	{
+		pos--
+		if(pos < 0) return ""
+	}
+	return s[0:pos]
+}
+
+string s = removeTrailingSpaces( "trailing spaces    ")
+print "<" s ">"

@@ -1,0 +1,42 @@
+// Lab 3.2 - Attribute DXL
+
+/*
+Manually open the "Stakeholder Requirements" module
+
+Write and test an attribute DXL script that will do the following:
+
+    multiply the "Cost" and the "No per day" attributes
+    set the attribute value to be the product
+*/
+
+real cost = obj."Cost"
+
+int num = obj."No per day"
+
+real total = cost * realOf(num)
+
+obj.attrDXLName = total
+
+
+///////////////////////////////////////
+// 
+
+string head = obj."Object Heading"
+string txt = obj."Object Text"
+
+if(!null head) 
+{
+   obj.attrDXLName = "Header"
+}
+else if(!null txt)
+{
+   if(matches("shall",txt))
+   {
+	   obj.attrDXLName = "Requirement"
+   }
+   else
+   {
+	   obj.attrDXLName = "Information"
+   }
+}
+

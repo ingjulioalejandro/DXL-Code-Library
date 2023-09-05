@@ -1,0 +1,107 @@
+// Lab 2.9 - Accessing Link Sources
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+For each object in the module, print the following for each incoming link:
+
+    Object Identifier of the target object
+    Object Identifier of the source object of the link
+    Object Heading and text of the source object of the link
+*/
+
+Module 	m
+Object 	srcObj, trgObj
+Link 	lnk
+LinkRef lr
+string 	sSrcModName 	= null
+
+for trgObj in current Module do 
+{
+	// loop for opening source modules
+    for lr in trgObj <- "*" do 
+    {
+        sSrcModName = fullName(source(lr))
+        if (! open(module(sSrcModName))) 
+        {
+             m = read(sSrcModName, false)
+        }
+    }
+    
+    // loop for accessing source objects
+    for lnk in trgObj <- "*" do 
+    { 
+        srcObj = source(lnk)
+        print identifier(trgObj) "  <-  " identifier(srcObj) "\t:" //-
+              srcObj."Object Heading" srcObj."Object Text" "\n"
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////
+// Alt:
+
+Module 	m
+Object 	srcObj, trgObj
+Link 	l
+LinkRef lr
+string 	srcModName 	= null
+Skip 	modSkip 	= createString
+Buffer  buff		= create
+
+for trgObj in current Module do 
+{
+	// loop for opening source modules
+    for lr in trgObj <- "*" do 
+    {
+        srcModName = fullName(source(lr))
+        if (! open(module(srcModName))) 
+        {
+             m = read(srcModName, false)
+             // if module is opened, save in skip list, to close later
+             put(modSkip, srcModName, m)
+        }
+    }   
+    // loop for accessing source objects
+    bool isFirst = true
+    for l in trgObj <- "*" do 
+    {
+	    if(isFirst)
+	    {
+		    buff += "-------------------------------------------\n"
+		    isFirst = false
+	    }
+        srcObj = source(l)
+        buff +=  identifier(trgObj) "\t<-\t" identifier(srcObj) 
+        buff +=  "\t " srcObj."Object Heading" srcObj."Object Text" "\n"
+    }
+}
+
+// closing the source modules
+for m in modSkip do 
+{
+    close(m)
+}
+delete(modSkip)
+print stringOf(buff)
+delete buff
+
+
+////////////////////////////////////////////////////////////
+// Function to open all source modules
+void openAllSrcMods(Object trgObj)
+{
+	LinkRef lr
+	string 	sSrcModName 	= null
+
+    for lr in trgObj <- "*" do 
+    {
+        sSrcModName = fullName(source(lr))
+        if (! open(module(sSrcModName))) 
+        {
+             read(sSrcModName, false)
+        }
+    }
+}

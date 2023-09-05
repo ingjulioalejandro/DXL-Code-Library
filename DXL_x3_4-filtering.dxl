@@ -1,0 +1,50 @@
+// Lab 3.4 - Filtering
+
+/*
+Manually open the "Stakeholder Requirements" module
+write and test a script to do the following:
+
+    display only those objects that contain the word "shall" and that
+    have attribute "Cost" greater than 1000.00 but less than 2000.00
+
+    apply a descending sort by "Cost"
+*/
+
+Module m = current Module
+Filter f1, f2, f3, f
+Sort s
+
+f1 = contents("shall", false)
+f2 = attribute "Cost" > "1000.0"
+f3 = attribute "Cost" < "2000.0"
+
+f = f1 && f2 && f3
+
+set(m, f)
+filtering(on)
+
+s = descending("Cost")
+set(m, s)
+sorting(on)
+
+//////////////////////////////////////////////////////
+// alt
+Module m = current Module
+
+Filter  f =  (contents("shall", false))    &&
+			 (attribute "Cost" > "1000.0") &&
+			 (attribute "Cost" < "2000.0")
+
+set(m, f)
+filtering(true)
+
+Sort s = descending("Cost")
+set(m, s)
+sorting(true)
+
+////////////////////////////////////////////
+//
+set(current Module, (contents("shall", false)) 		  && 
+						(attribute "Cost" > "1000.0") && 
+						(attribute "Cost" < "2000.0")		)
+filtering(on)

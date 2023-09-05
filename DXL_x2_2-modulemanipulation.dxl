@@ -1,0 +1,25 @@
+// Lab 2.2 - Module manipulation
+
+/*
+ - Open the module "System requirements" in edit mode
+ - Change the module description to:
+       "<Your Company Name> - System requirements"
+ - Save the Module
+ - Refresh the Module and the DOORS Explorer
+*/
+
+Module m = edit("/New Family Car Project/Requirements/System Requirements", false)
+
+if( !null(m) )
+{
+	m."Description" = "IBM  -  System Requirements"
+	save(m)
+	close(m)
+}
+else
+{
+	print("Module does not exist")
+}
+
+// makes changes visible in the database explorer
+refreshDBExplorer()   

@@ -1,0 +1,58 @@
+// Lab 8.1 - List View
+
+/*
+Manually open Car user reqts
+write and test a script that will create a dialog box that
+Displays the following in a list view:
+*/
+string dummyList[] = {}
+Skip objList = create()
+DB listDB  = create "Module Information"
+DBE lsvDBE = listView(listDB, 
+						listViewOptionCheckboxes|listViewOptionMultiselect, 
+						500, 10, dummyList)
+						
+void doActivate(DBE lst, int i)
+{
+	Object o
+	if(find(objList, i, o))
+	{
+		current = o
+		refresh current Module
+	}
+}
+
+void doNothing(DBE dbe, int i)
+{
+	
+}
+set(lsvDBE, doNothing, doNothing, doActivate)
+
+void doClose(DB db)
+{
+	delete objList
+	hide db
+}
+
+
+//apply(listDB, "Update", doUpdate)
+close(listDB, false, doClose)
+realize(listDB)
+empty(lsvDBE)
+insertColumn(lsvDBE, 0, "Object ID",      150, iconNone)
+insertColumn(lsvDBE, 1, "Object Heading", 150, iconNone)
+insertColumn(lsvDBE, 2, "Object Text",    300, iconNone)
+
+Object o
+for o in current Module do 
+{
+    string strId = identifier(o)
+    string strHead = o."Object Heading"
+    string strText = o."Object Text"
+    int    numEle  = noElems(lsvDBE)
+    insert(lsvDBE, numEle, strId, iconNone)
+    set(lsvDBE, numEle, 1, strHead)
+    set(lsvDBE, numEle, 2, strText)
+    put(objList, numEle, o)
+}
+show (listDB)

@@ -1,0 +1,32 @@
+// Lab 3.1 - Layout DXL
+
+/*
+Manually open the "Stakeholder Requirements" module
+Display the 'Cost' attribute in a column
+Display the 'No per day' attribute in a column
+Create a DXL Column entitled "Total Cost".
+
+Write and test a Layout DXL script that will do the following:
+
+    multiply the "Cost" and the "No per day" attributes
+    display the product
+*/
+
+real cost 	= obj."Cost"
+int  num 	= obj."No per day"
+real total 	= cost * realOf(num)
+
+display total  ""
+
+///////////////////////
+// Alt get rid of decimals
+
+real cost 	= obj."Cost"
+int  num 	= obj."No per day"
+real total 	= cost * realOf(num)
+
+if(null cost || null num) halt
+
+string s = total ""
+s = s[0:length(s)-5]
+display s

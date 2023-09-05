@@ -1,0 +1,106 @@
+// Exercise 22a - Screen dump
+
+/*
+Manually open the "Stakeholder Requirements" module
+write and test a script to do the following:
+
+For each object in the current display set, export the contents of each displayed column.
+Use tabs to separate column data.
+*/
+
+string fn = "c:/temp/doors.xls"
+Stream output = write(fn)
+Module m = current
+Object currObj
+Column col
+for currObj in m do 
+{
+    for col in m do 
+    {
+        if (main(col)) 
+        {
+            string hdg = currObj."Object Heading"
+            if (! null(hdg)) 
+            {
+                output << number(currObj) "  " hdg "\t"
+            }
+            string txt = currObj."Object Text"
+            if (! null(txt)) 
+            {
+                output <<  " [" identifier(currObj) "]" txt"\t"
+            }
+        } 
+        else 
+        {
+            output << text(col, currObj) "\t"
+        }
+    }
+    output << "\n"
+}
+close output
+
+
+//-------------------------------------
+// Alternative
+string fn = "c:/temp/doors.xls"
+Stream output = write(fn)
+Module m = current
+Object o
+string id, txt, head
+int i = 0
+
+for o in m do 
+{
+	output <<  "\"" identifier(o) "\"\t"
+	head = o."Object Heading" ""
+	txt  = o."Object Text" ""
+	if(head != "")
+	{
+		output << "\"" number(o) "  " head "\"\t" 
+		// flush(output)
+	}
+	if(txt != "")
+	{
+		output << "\"" txt "\"\t" 
+		
+	}
+	output << "\n"
+}
+close output
+
+
+////////////////////////////////////////////////////
+// Alternative with buffers
+
+void moduleReport(Module m,  string fn)
+{
+	Buffer b = create
+	Object o
+	string id, txt, head
+	int i = 0
+	
+	for o in m do 
+	{
+		b +=  "\"" identifier(o) "\"\t"
+		head = o."Object Heading" ""
+		txt  = o."Object Text" ""
+		if(head != "")
+		{
+			b += "\"" number(o) "  " head "\"\t" 
+		}
+		if(txt != "")
+		{
+			b += "\"" txt "\"\t" 
+			
+		}
+		b += "\n"
+	}
+	
+	Stream output = write(fn)
+	output << b
+	delete b
+	close output
+}
+
+moduleReport(current Module, "c:/temp/doors_" today "_.xls")
+infoBox "Export finished!!"

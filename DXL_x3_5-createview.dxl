@@ -1,0 +1,105 @@
+// Lab 3.5 - Create view
+
+/*
+- Delete all columns in the module
+- Create new view with following characteristics:
+     - Column 1 Title = "Main",            Set column to main
+     - Column 2 Title = "Cost",            Attribute = "Cost"
+     - Column 3 Title = "Created On",      Attribute = "Created On"
+Set width of columns to 400, 80, 150
+
+Save as "Cost View" and make it the default view for the module
+*/
+
+Column c
+int i, numCols = 0
+Module curMod = current
+
+// First delete existing columns
+for c in curMod do numCols++
+
+for (i = 0; i < numCols; i++)  
+{
+	delete(column(0) )
+}
+
+// Now create new columns
+c = column(0)
+main(c)
+width(c, 400)
+title(c, "Main")
+
+c = column(1)
+attribute(c, "Cost")
+width(c, 80)
+justify(c, right)
+
+c = column(2)
+attribute(c, "Created On")
+width(c, 150)
+
+View v = view("Cost View")
+save(v)
+setDefaultViewForModule(curMod, "Cost View")
+
+
+/////////////////////////////////////////////////////
+// Alternative:
+// Define functions 
+
+bool viewExist(Module m, string thisViewName)
+{
+	if(thisViewName == "Standard view") return true
+	
+	string vName
+	for vName in views m do
+	{
+		if(vName == thisViewName) return true
+	}
+	return false
+}
+
+void deleteAllColumns(Module m)
+{
+	Column c
+	int i, numCols = 0
+	for c in m do numCols++
+
+	for (i = 0; i < numCols; i++)  
+	{
+		delete(column(0) )
+	}
+}
+
+void insertCol(int wdt, int pos)
+{
+	Column c = column(pos)
+	main(c)
+	width(c, wdt)
+	title(c, "Main")
+}
+
+void insertCol(int wdt, int pos, string attrName, Justification just)
+{
+	Column c = column(pos)
+	attribute(c, attrName)
+	width(c, wdt)
+	justify(c, just)
+}
+
+// First delete existing columns
+deleteAllColumns(current Module)
+
+// Now create new columns
+int i = 0
+insertCol(400, i++)
+insertCol(80,i++ , "Cost", right)
+insertCol(150, i++, "Created On", left)
+
+if(viewExist(current Module, "Cost View"))
+{
+	if(!confirm("Do you want to overwrite the existing view?")) halt
+}
+
+save(view("Cost View"))
+setDefaultViewForModule(current Module, "Cost View")

@@ -1,0 +1,55 @@
+// Lab 2.12 - Attribute type creation
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+Create a new attribute type with the following characteristics:
+
+Name = "Course Object Type"
+    Enumeration Option Names = "Header", "Requirement", "Information"
+Enumeration Option Values:
+    Header = 1
+    Requirement = 2
+    Information = 0
+Enumeration Option Colors:
+    Header = Blue
+    Requirement = Red
+    Information = Black
+
+Then create the 'Object Type' attribute using the new type
+*/
+
+string atName		= "Course Object Type"
+string adName		= "Object Type"
+string optVal[] 	= {"Header", "Requirement", "Information"}
+int    weightVal[]  = {1, 2, 0 }
+int    colVal[]     = {realColor_Blue, realColor_Red, realColor_Black}
+string errMsg       = null
+
+setRealColorOptionForTypes(true)
+
+AttrType at = find(current Module, atName)
+if( null at)
+{
+	create(atName, optVal, weightVal, colVal, errMsg)
+	if (! null(errMsg)) 
+	{
+	    errorBox errMsg "!!!"
+	    halt
+	}
+}
+else
+{
+	infoBox "Type \"" atName "\" already exists"
+}
+
+if(! exists attribute adName )
+{
+	create object type atName  history true //-
+   	changeBars true date true inherit false hidden false attribute adName 
+}
+else
+{
+    infoBox "The attribute \"" adName "\" does already exist"
+}

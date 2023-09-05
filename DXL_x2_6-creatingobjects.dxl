@@ -1,0 +1,39 @@
+// Lab 2.6 - Creating Objects
+
+/*
+Manually open the "Systems requirements" module
+Write and test a script to do the following:
+
+create a new object before the first object in the module
+set its object heading to be its identifier
+create two child objects below it
+set their object headings to be their identifiers
+*/
+
+
+Module curM = current Module
+Object o 	= null
+
+o = create(curM)
+o."Object Heading" = identifier(o)
+
+o = create( below(o) )
+o."Object Heading" = identifier(o)
+
+o = create( after(o) )
+o."Object Heading" = identifier(o)
+
+
+////////////////////////////////////////////////////
+// Alt: Using three Object variables
+
+Module curM = current
+Object firstObj, secondObj, thirdObj
+
+firstObj 	= create(curM)
+secondObj 	= create( below( firstObj ) )
+thirdObj 	= create( after( secondObj ) )
+
+firstObj."Object Heading" 	= identifier(firstObj)
+secondObj."Object Heading" 	= identifier(secondObj)
+thirdObj."Object Heading" 	= identifier(thirdObj)

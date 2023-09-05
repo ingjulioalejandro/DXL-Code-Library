@@ -1,0 +1,32 @@
+Lab 7 - Adding DXL menus
+
+-------------------------------
+File: lib/dxl/addins/addins.idx
+-------------------------------
+
+user    U _ User
+mydxl   M _ My DXL Library
+
+------------------------------
+File: lib/dxl/addins/mydxl.hlp
+------------------------------
+
+My DXL library
+
+Contains a collection of DXL scripts that are useful to me.
+
+------------------------------
+File: lib/dxl/addins/mydxl.idx
+------------------------------
+
+showuser    S _ Show User
+
+---------------------------------
+File: lib/dxl/addins/showuser.dxl
+---------------------------------
+
+// Show current user
+
+/* Shows current user name in an info box */
+
+infoBox("Current user is " doorsname)

@@ -1,0 +1,101 @@
+// Lab 2.7 - Objects with links
+
+/*
+Manually open the "System requirements" module
+write and test a script to do the following:
+
+For each object that contains outgoing links, print the following:
+
+    Object Identifier
+    Number of outgoing links from this object
+*/
+
+Object o
+Link l
+int numLinks = o
+for o in current Module do 
+{
+    int numLinks = 0	// Start counting from 0 for every object
+    for l in o -> "*" do 
+    {
+        numLinks++
+    }
+    if (numLinks > 0)	// If there are any out-links print 
+    {
+        print identifier(o) " has " numLinks " outgoing links\n"
+    }
+}
+
+//////////////////////////////////////////////////////////////////////
+//Alt: As function. Added by NP
+int numOfLinks(Object o)
+{
+	int numLinks = 0
+	Link l 
+	for l in o -> "*" do
+	{
+		numLinks++
+	}
+	return numLinks
+}
+
+void numOfLinks(Module m)
+{	
+	Object o 
+	for o in m do
+	{
+		int n = numOfLinks(o)
+		if(n > 0)
+		{
+			print identifier(o) "\thas\t" n "links\n"
+		}
+	}
+}
+
+numOfLinks(current Module)
+
+
+/////////////////////////////////////////////////////
+// Alt:
+
+
+int numOutLinks(Object o)
+{
+	Link l
+	int numLinks = 0
+    for l in o -> "*" do 
+    {
+        numLinks++
+    }
+    return numLinks
+}
+
+bool numOutLinks(Module m, Buffer b)
+{
+	Object o	 = null	
+	
+	bool foundLink = false
+	int numLinks = null
+		
+	for o in m do 
+	{
+	    numLinks = numOutLinks(o)
+	    
+	    if (numLinks > 0) 
+	    {
+		    foundLink = true
+	        b += identifier(o) " has " numLinks " outgoing links\n"
+	    }
+	}
+	
+	return foundLink
+}
+
+Buffer b = create()
+
+if(numOutLinks(current Module, b))
+{
+	print tempStringOf(b)
+}
+
+delete(b)

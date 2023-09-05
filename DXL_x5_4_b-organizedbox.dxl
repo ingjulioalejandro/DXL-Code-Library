@@ -1,0 +1,135 @@
+// Lab 5.4 - Organized dialog box
+
+/*
+This script generates an Functional dialog that prints its contents.
+*/
+
+
+string crusts[]   = {"Thin", "Hand-tossed", "Pan"}
+string toppings[] = {"Cheese", "Pepperoni", "Beef", "Sausage", "Ham", "Mushroom"}
+string methods[]  = {"Eat-in", "Delivery", "Carry-out"}
+
+DB  pizzaDB    = create("Pizza Order", styleCentered)
+DBE cNameDBE   = field(pizzaDB, "Customer name", "John Doe", 20, false)
+DBE dateLblDBE = label(pizzaDB, "Last ordered on:")
+DBE oDateDBE   = date( pizzaDB, 30, dateOf(0), true)
+
+DBE oFrameDBE  = frame(pizzaDB, "Order details", 300, 100)
+DBE crustDBE   = radioBox(pizzaDB, "Crust:  ", crusts, 1)
+DBE topDBE     = multiList(pizzaDB, "Toppings", 200, 4, toppings)
+set(topDBE, 1)
+DBE whereDBE   = choice(pizzaDB, "Order for", methods, 3, 20, 0, false)
+DBE file 	   = fileName(pizzaDB, "pizza.dat", "*.dat|*.txt", "Pizza Files")
+
+crustDBE  -> "top"    -> "inside" -> oFrameDBE
+topDBE    -> "top"    -> "spaced" -> crustDBE  
+whereDBE  -> "top"    -> "spaced" -> topDBE    
+whereDBE  -> "bottom" -> "inside" -> oFrameDBE   
+file 	  -> "top"    -> "flush"  -> oFrameDBE   
+file 	  -> "bottom" -> "form"
+
+
+// Go button callback function
+void makePizza(DB calledFrom) 
+{
+	Buffer order   = create()
+    string cName   = get(cNameDBE)
+    string oDate   = get(oDateDBE) 
+    string crust   = crusts[get(crustDBE)]
+    order          += cName " would like a " crust " pizza with:\n"
+    string loc     = get(whereDBE)
+    string tops
+    for tops in topDBE do 
+    {
+        order += "\t" tops "\n"
+    }
+    order += "for " loc " since they haven't had a pizza since " oDate "\n"
+    
+    string fName = get(file)
+    Stream out = write(fName)
+    out << stringOf(order)
+    close(out)
+    delete(order)
+}
+
+
+apply(pizzaDB, "Go", makePizza)
+
+realize(pizzaDB)
+setExtraHeightShare(topDBE, 1.0)
+setExtraWidthShare(topDBE, 1.0)
+setExtraHeightShare(oFrameDBE, 1.0)
+setExtraWidthShare(oFrameDBE, 1.0)
+
+
+show(pizzaDB)
+
+/////////////////////////////////////////////////////////////////////
+// Alt. Naming
+DB   dbPizza    			= null		// The dialog box
+DBE dbeCustomerNameFld  	= null		// customer name field
+DBE dbeDateLbl 				= null		// last order label
+DBE dbeOrderDate   			= null		// the date picker
+DBE dbeDetailsFrm			= null		// the frame
+DBE dbeCrustRdo				= null
+DBE dbeTopML				= null
+DBE dbeDeliveryCh   		= null
+DBE dbeFileName				= null
+
+string saCrusts[]   = {"Thin", "Hand-tossed", "Pan"}
+string saToppings[] = {"Cheese", "Pepperoni",  "Beef", "Sausage",  "Ham", "Mushroom"} 
+string saMethods[]  = {"Eat-in", "Delivery", "Carry-out"}
+
+// Callback functions
+void makePizza(DB winDB) 
+{
+	Buffer buf		= create()
+    string	cName 	= get(dbeCustomerNameFld)
+    string	sDate 	= get(dbeOrderDate)
+    int 	iCrustIdx	= get(dbeCrustRdo)
+    string	sCrust 	= saCrusts[iCrustIdx]
+    string	sLoc   	= get(dbeDeliveryCh)
+    string sFileName = get(dbeFileName)
+    string	sTops
+    
+    buf +=  cName " would like a " sCrust " pizza with:\n"
+    
+    for sTops in dbeTopML do 
+    {
+        buf +=  sTops "\n"
+    }
+    buf +=  "for " sLoc " on " sDate "\n"
+    
+    Stream stmOut = write(sFileName)
+    stmOut << stringOf(buf)
+    close(stmOut)
+    delete(buf)
+}
+
+// Main
+dbPizza 			= create("Pizza Order", styleCentered)
+dbeCustomerNameFld 	= field( dbPizza, "Customer name", "John Doe", 20, false)
+dbeDateLbl 			= label( dbPizza, "Last ordered on:")
+dbeOrderDate   		= date( dbPizza, 30, dateAndTime(today), true)
+dbeDetailsFrm		= frame(dbPizza, "Order details", 300, 150)
+
+dbeCrustRdo			= radioBox(dbPizza, "Crust:  ", saCrusts, 1)
+dbeTopML			= multiList(dbPizza, "Toppings", 200, 4, saToppings)
+set(dbeTopML, 1)
+dbeDeliveryCh   	= choice(dbPizza, "Order for", saMethods, 3, 20, 0, false)
+dbeFileName			= fileName(dbPizza, "c:/temp/pizza.dat", "*.dat|*.txt", "Pizza Files|Text Files")
+
+apply(dbPizza, "Go", makePizza)
+
+dbeCrustRdo		-> "top"    	-> "inside" 	-> dbeDetailsFrm
+dbeDeliveryCh  	-> "bottom" 	-> "inside" 	-> dbeDetailsFrm   
+dbeDeliveryCh  	-> "right" 		-> "inside" 	-> dbeDetailsFrm   
+dbeFileName 	-> "top"    	-> "flush"  	-> dbeDetailsFrm   
+
+realize(dbPizza)
+setExtraHeightShare(dbeTopML, 1.0)
+setExtraWidthShare(dbeTopML, 1.0)
+setExtraHeightShare(dbeDetailsFrm, 1.0)
+setExtraWidthShare(dbeDetailsFrm, 1.0)
+
+show(dbPizza)

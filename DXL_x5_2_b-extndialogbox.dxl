@@ -1,0 +1,51 @@
+// Lab 5.2 - Extended dialog box
+
+/*
+This script generates an extended dialog with seven elements.
+*/
+
+string crusts[]   = {"Thin", "Hand-tossed", "Pan"}
+string toppings[] = {"Cheese", "Pepperoni", 
+					 "Beef", "Sausage", 
+					 "Ham", "Mushroom"}
+					 
+string methods[]  = {"Eat-in", "Delivery", "Carry-out"}
+
+DB  pizzaDB    = create("Pizza Order", styleCentered)
+DBE cNameDBE   = field(pizzaDB, "Customer name", "John Doe", 20, false)
+DBE dateLblDBE = label(pizzaDB, "Last ordered on:")
+DBE oDateDBE   = date( pizzaDB, 30, today, true)
+
+DBE oFrameDBE  = frame(pizzaDB, "Order details", 300, 150)
+DBE crustDBE   = radioBox(pizzaDB, "Crust:  ", crusts, 1)
+DBE topDBE     = multiList(pizzaDB, "Toppings", 200, 4, toppings)
+set(topDBE, 1)
+DBE whereDBE   = choice(pizzaDB, "Order for", methods, 3, 20, 0, false)
+DBE file 	   = fileName(pizzaDB, "c:/temp/pizza.dat", "*.dat|*.txt", "Pizza Files|Text Files")
+
+// Go button callback function
+void makePizza(DB calledFrom) 
+{
+	Buffer order   = create()
+    string cName   = get(cNameDBE)
+    string oDate   = get(oDateDBE) 
+    int crustIdx   = get(crustDBE)
+    string crust   = crusts[crustIdx]
+    order          += cName " would like a " crust " pizza with:\n"
+    string loc     = get(whereDBE)
+    string tops
+    for tops in topDBE do 
+    {
+        order += "\t" tops "\n"
+    }
+    order += "for " loc " on " oDate "\n"
+    
+    string fName = get(file)
+    Stream out = write(fName)
+    out << stringOf(order)
+    close(out)
+    delete(order)
+}
+
+apply(pizzaDB, "Go", makePizza)
+show(pizzaDB)

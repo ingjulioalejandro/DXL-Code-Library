@@ -1,0 +1,97 @@
+/*
+trigger ("Trigger Demo", 
+			attribute -> "Object Type", 
+			pre, 
+			modify,
+			10, 
+			"#include <trigger/trigger.dxl>")
+*/
+string oType = value(current Trigger)
+Object o 	 = object(current Trigger)
+string txt   = o."Object Text"
+if (oType  == "Requirement" && !matches(txt, "shall") ) 
+{
+	warningBox ("This Object is not at Requirement")
+    set trigPreConFail
+}
+else 
+{
+    set trigPreConPass
+}
+
+
+/*
+delete("Trigger Demo", 
+			attribute -> "Object Type", 
+			pre, 
+			modify,
+			10)
+*/
+
+
+/////////////////////////////////////////////////////
+// Another trigger
+
+
+/*
+trigger ("Trigger Demo", 
+			attribute -> "Object Text", 
+			post, 
+			modify,
+			10, 
+			"#include <C:/Temp/trigger.dxl>")
+*/
+//infoBox("You have modified the Object Text")
+Trigger t = current
+Object o = object(t)
+
+DB db = create "Enter reason"
+
+DBE fld = field(db, "Reason: ", "", 20, false)
+
+void doOK(DB calledfrom)
+{
+	
+	string j = get(fld)
+	o."Justification" = j
+	hide calledfrom
+	refresh(current Module)
+}
+
+apply(db, "OK", doOK)
+
+show db
+
+
+/*
+delete("Trigger Demo", 
+			attribute -> "Object Text", 
+			post, 
+			modify,
+			10)
+*/
+
+/////////////////////////////////////////////
+// delete all triggers
+
+Trigger t 
+
+for t in database do
+{
+	print name(t) "\n"
+	delete t
+}
+
+
+for t in current Project do
+{
+	print name(t) "\n"	
+	delete t
+}
+
+
+for t in current Module do
+{
+	print name(t) "\n"
+	delete t
+}
